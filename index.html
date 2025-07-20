@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Application Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+
+    .form-container {
+      background: white;
+      max-width: 600px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    .gender-options {
+      margin-bottom: 15px;
+    }
+
+    input[type="file"] {
+      margin-bottom: 15px;
+    }
+
+    button {
+      background: #3498db;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2980b9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Application Form</h2>
+    <form id="application-form">
+      <label for="fullname">Full Name</label>
+      <input type="text" id="fullname" name="fullname" required>
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" required>
+
+      <label>Gender</label>
+      <div class="gender-options">
+        <input type="radio" id="male" name="gender" value="Male" required>
+        <label for="male" style="display:inline;">Male</label>
+        <input type="radio" id="female" name="gender" value="Female">
+        <label for="female" style="display:inline;">Female</label>
+        <input type="radio" id="other" name="gender" value="Other">
+        <label for="other" style="display:inline;">Other</label>
+      </div>
+
+      <label for="position">Position Applied For</label>
+      <select id="position" name="position" required>
+        <option value="">-- Select Position --</option>
+        <option value="Web Developer">Web Developer</option>
+        <option value="Graphic Designer">Graphic Designer</option>
+        <option value="Project Manager">Project Manager</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="resume">Upload Resume</label>
+      <input type="file" id="resume" name="resume" disabled>
+
+      <label for="message">Cover Letter / Message</label>
+      <textarea id="message" name="message" rows="5" placeholder="Write a short message..."></textarea>
+
+      <button type="submit">Submit Application</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("application-form");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const data = {
+        fullname: document.getElementById("fullname").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        gender: document.querySelector('input[name="gender"]:checked').value,
+        position: document.getElementById("position").value,
+        message: document.getElementById("message").value
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbxdFXLUDxrwdeTUoxr3lHJymKXAo3sooVg17STQHJrXOM89An-dKFzwHipeHsAUTr_0JQ/exec", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => response.text())
+      .then(responseText => {
+        alert("Application submitted successfully!");
+        form.reset();
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        alert("Something went wrong while submitting the form.");
+      });
+    });
+  </script>
+
+</body>
+</html>
